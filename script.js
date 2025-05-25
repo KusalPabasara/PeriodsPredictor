@@ -1,4 +1,3 @@
-// Enhanced Period Detector JavaScript
 class PeriodDetector {
     constructor() {
         this.data = {};
@@ -23,7 +22,6 @@ class PeriodDetector {
             calculateBtn.addEventListener('click', (e) => this.handleCalculateClick(e));
         }
 
-        // Add input validation and real-time feedback
         const inputs = ['lastPeriod', 'cycleLength', 'periodLength'];
         inputs.forEach(id => {
             const element = document.getElementById(id);
@@ -34,7 +32,6 @@ class PeriodDetector {
             }
         });
 
-        // Add keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
     }
 
@@ -81,7 +78,6 @@ class PeriodDetector {
     playClickSound() {
         if (!this.soundEnabled) return;
         
-        // Create a subtle click sound using Web Audio API
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -257,7 +253,6 @@ class PeriodDetector {
             lastPeriodInput.valueAsDate = today;
         }
 
-        // Set default values for cycle and period length if not set
         const cycleLengthInput = document.getElementById('cycleLength');
         if (cycleLengthInput && !cycleLengthInput.value) {
             cycleLengthInput.value = '28';
@@ -270,7 +265,6 @@ class PeriodDetector {
     }
 
     calculatePeriod() {
-        // Validate all inputs first
         const inputs = ['lastPeriod', 'cycleLength', 'periodLength'];
         let allValid = true;
 
@@ -286,7 +280,6 @@ class PeriodDetector {
             return;
         }
 
-        // Get input values
         const lastPeriodDate = new Date(document.getElementById('lastPeriod').value);
         const cycleLength = parseInt(document.getElementById('cycleLength').value);
         const periodLength = parseInt(document.getElementById('periodLength').value);
@@ -296,13 +289,10 @@ class PeriodDetector {
             return;
         }
 
-        // Save data
         this.saveData();
 
-        // Show loading animation
         this.showLoadingAnimation();
 
-        // Calculate after a brief delay for better UX
         setTimeout(() => {
             this.performCalculations(lastPeriodDate, cycleLength, periodLength);
         }, 800);
@@ -324,14 +314,12 @@ class PeriodDetector {
     }
 
     performCalculations(lastPeriodDate, cycleLength, periodLength) {
-        // Calculate next period
         const nextPeriodStart = new Date(lastPeriodDate);
         nextPeriodStart.setDate(lastPeriodDate.getDate() + cycleLength);
 
         const nextPeriodEnd = new Date(nextPeriodStart);
         nextPeriodEnd.setDate(nextPeriodStart.getDate() + periodLength - 1);
 
-        // Calculate fertile window (more accurate calculation)
         const ovulationDay = new Date(nextPeriodStart);
         ovulationDay.setDate(nextPeriodStart.getDate() - 14);
 
@@ -341,19 +329,14 @@ class PeriodDetector {
         const fertileEnd = new Date(ovulationDay);
         fertileEnd.setDate(ovulationDay.getDate() + 1);
 
-        // Display results with animations
         this.displayResults(nextPeriodStart, nextPeriodEnd, fertileStart, fertileEnd, ovulationDay);
         
-        // Show health tips
         this.showEnhancedHealthTips(lastPeriodDate, nextPeriodStart);
         
-        // Generate enhanced calendar
         this.generateEnhancedCalendar(lastPeriodDate, nextPeriodStart, fertileStart, fertileEnd, ovulationDay);
         
-        // Show results section with animation
         this.showResultsWithAnimation();
 
-        // Show success notification
         this.showNotification('🎉 Your cycle has been calculated!', 'success');
     }
 
@@ -389,7 +372,6 @@ class PeriodDetector {
             `;
         }
 
-        // Add ovulation info
         const ovulationElement = document.getElementById('ovulationDay') || this.createOvulationElement();
         if (ovulationElement) {
             ovulationElement.innerHTML = `
@@ -542,25 +524,20 @@ class PeriodDetector {
         const currentMonth = today.getMonth();
         const currentYear = today.getFullYear();
         
-        // Clear previous calendar
         calendarDiv.innerHTML = '';
         
-        // Create enhanced month header
         const monthHeader = this.createMonthHeader(today);
         calendarDiv.appendChild(monthHeader);
         
-        // Create calendar grid
         const calendarGrid = this.createCalendarGrid(
             currentYear, currentMonth, today, lastPeriod, 
             nextPeriod, fertileStart, fertileEnd, ovulationDay
         );
         calendarDiv.appendChild(calendarGrid);
         
-        // Add enhanced legend
         const legend = this.createEnhancedLegend();
         calendarDiv.appendChild(legend);
 
-        // Add calendar animation
         this.animateCalendar(calendarDiv);
     }
 
@@ -584,7 +561,6 @@ class PeriodDetector {
         monthHeader.appendChild(monthTitle);
         monthHeader.appendChild(nextBtn);
         
-        // Add navigation functionality (placeholder for future enhancement)
         prevBtn.addEventListener('click', () => this.navigateMonth(-1));
         nextBtn.addEventListener('click', () => this.navigateMonth(1));
         
@@ -592,7 +568,6 @@ class PeriodDetector {
     }
 
     navigateMonth(direction) {
-        // Placeholder for month navigation
         this.showNotification('🗓️ Month navigation coming soon!', 'info');
     }
 
@@ -601,7 +576,6 @@ class PeriodDetector {
         const calendarGrid = document.createElement('div');
         calendarGrid.className = 'calendar-grid';
         
-        // Add day headers
         dayNames.forEach(day => {
             const dayHeader = document.createElement('div');
             dayHeader.className = 'day-header';
@@ -609,18 +583,15 @@ class PeriodDetector {
             calendarGrid.appendChild(dayHeader);
         });
         
-        // Get calendar data
         const firstDay = new Date(currentYear, currentMonth, 1);
         const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
         
-        // Add empty cells for days before the first day
         for (let i = 0; i < firstDay.getDay(); i++) {
             const emptyDay = document.createElement('div');
             emptyDay.className = 'day empty';
             calendarGrid.appendChild(emptyDay);
         }
         
-        // Add days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             const date = new Date(currentYear, currentMonth, day);
             const dayElement = this.createEnhancedDayElement(
@@ -638,16 +609,13 @@ class PeriodDetector {
         dayElement.className = 'day';
         dayElement.textContent = day;
         
-        // Add tooltip data
         let tooltipText = '';
         
-        // Check if today
         if (this.isSameDate(date, today)) {
             dayElement.classList.add('today');
             tooltipText = 'Today';
         }
         
-        // Check if period day
         const periodEnd = new Date(lastPeriod);
         periodEnd.setDate(lastPeriod.getDate() + 5);
         if (date >= lastPeriod && date < periodEnd) {
@@ -655,25 +623,21 @@ class PeriodDetector {
             tooltipText = tooltipText ? `${tooltipText} • Period Day` : 'Period Day';
         }
         
-        // Check if fertile window
         if (date >= fertileStart && date <= fertileEnd) {
             dayElement.classList.add('fertile');
             tooltipText = tooltipText ? `${tooltipText} • Fertile Window` : 'Fertile Window';
         }
         
-        // Check if ovulation day
         if (this.isSameDate(date, ovulationDay)) {
             dayElement.classList.add('ovulation');
             tooltipText = tooltipText ? `${tooltipText} • Ovulation Day` : 'Ovulation Day';
         }
         
-        // Add tooltip
         if (tooltipText) {
             dayElement.title = tooltipText;
             dayElement.setAttribute('data-tooltip', tooltipText);
         }
         
-        // Add click interaction
         dayElement.addEventListener('click', () => this.handleDayClick(date, tooltipText));
         
         return dayElement;
@@ -741,7 +705,6 @@ class PeriodDetector {
             legendItem.appendChild(label);
             legend.appendChild(legendItem);
             
-            // Add hover effect
             legendItem.addEventListener('mouseenter', () => {
                 legendItem.style.transform = 'translateY(-2px)';
                 legendItem.style.boxShadow = '0 4px 15px rgba(255, 107, 157, 0.2)';
@@ -752,7 +715,6 @@ class PeriodDetector {
                 legendItem.style.boxShadow = '';
             });
             
-            // Add animation delay
             legendItem.style.opacity = '0';
             legendItem.style.transform = 'translateY(20px)';
             setTimeout(() => {
@@ -794,7 +756,6 @@ class PeriodDetector {
     }
 
     showNotification(message, type = 'info') {
-        // Remove existing notifications
         const existingNotifications = document.querySelectorAll('.notification');
         existingNotifications.forEach(notification => {
             notification.remove();
@@ -835,13 +796,11 @@ class PeriodDetector {
         
         document.body.appendChild(notification);
         
-        // Animate in
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateX(0) scale(1)';
         }, 50);
         
-        // Auto remove after 4 seconds
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateX(100%) scale(0.8)';
@@ -852,7 +811,6 @@ class PeriodDetector {
             }, 400);
         }, 4000);
         
-        // Remove on click
         notification.addEventListener('click', () => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateX(100%) scale(0.8)';
@@ -865,7 +823,6 @@ class PeriodDetector {
     }
 
     createFloatingElements() {
-        // Create subtle floating elements for ambiance
         const floatingContainer = document.createElement('div');
         floatingContainer.style.cssText = `
             position: fixed;
@@ -878,7 +835,6 @@ class PeriodDetector {
             overflow: hidden;
         `;
         
-        // Create floating hearts and sparkles
         for (let i = 0; i < 6; i++) {
             const floatingElement = document.createElement('div');
             const symbols = ['💕', '✨', '🌸', '💎', '🦋', '🌙'];
@@ -892,7 +848,6 @@ class PeriodDetector {
                 top: ${Math.random() * 100}%;
             `;
             
-            // Create unique keyframes for each element
             const keyframes = `
                 @keyframes float${i} {
                     0%, 100% { 
@@ -906,7 +861,7 @@ class PeriodDetector {
                 }
             `;
             
-            // Add keyframes to document
+
             const style = document.createElement('style');
             style.textContent = keyframes;
             document.head.appendChild(style);
@@ -918,7 +873,7 @@ class PeriodDetector {
     }
 
     setupTooltips() {
-        // Enhanced tooltip system
+    
         const style = document.createElement('style');
         style.textContent = `
             [data-tooltip] {
@@ -966,7 +921,7 @@ class PeriodDetector {
         document.head.appendChild(style);
     }
 
-    // Utility method to get cycle insights
+    
     getCycleInsights(lastPeriodDate, cycleLength) {
         const today = new Date();
         const daysSinceLastPeriod = Math.floor((today - lastPeriodDate) / (1000 * 60 * 60 * 24));
@@ -1003,7 +958,7 @@ class PeriodDetector {
         };
     }
 
-    // Method to export data (future feature)
+    
     exportData() {
         const data = {
             ...this.data,
@@ -1022,7 +977,7 @@ class PeriodDetector {
         this.showNotification('📊 Data exported successfully!', 'success');
     }
 
-    // Method to import data (future feature)
+    
     importData(file) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -1039,13 +994,13 @@ class PeriodDetector {
         reader.readAsText(file);
     }
 
-    // Method to reset all data
+    
     resetData() {
         if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
             localStorage.removeItem('periodData');
             this.data = {};
             
-            // Clear all inputs
+            
             const inputs = ['lastPeriod', 'cycleLength', 'periodLength'];
             inputs.forEach(id => {
                 const element = document.getElementById(id);
@@ -1054,7 +1009,7 @@ class PeriodDetector {
                 }
             });
             
-            // Hide results
+            
             const resultDiv = document.getElementById('result');
             if (resultDiv) {
                 resultDiv.style.display = 'none';
@@ -1065,13 +1020,13 @@ class PeriodDetector {
         }
     }
 
-    // Enhanced error handling
+    
     handleError(error, userMessage = 'Something went wrong') {
         console.error('Period Detector Error:', error);
         this.showNotification(`❌ ${userMessage}`, 'error');
     }
 
-    // Method to check browser compatibility
+    
     checkBrowserCompatibility() {
         const features = {
             localStorage: typeof Storage !== 'undefined',
@@ -1093,10 +1048,10 @@ class PeriodDetector {
     }
 }
 
-// Initialize the Period Detector
+
 const periodDetector = new PeriodDetector();
 
-// Add global keyboard shortcuts info
+
 document.addEventListener('keydown', function(e) {
     if (e.key === 'F1') {
         e.preventDefault();
@@ -1104,16 +1059,15 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Add service worker registration for offline functionality (future feature)
+
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-        // Service worker registration would go here
-        // This is a placeholder for future offline functionality
+        
         console.log('Period Detector ready for offline capabilities');
     });
 }
 
-// Export for testing purposes
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = PeriodDetector;
 }
