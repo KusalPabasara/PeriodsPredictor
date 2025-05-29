@@ -357,7 +357,7 @@ button:active {
 }
 
 .day.ovulation {
-    background: linear-gradient(135deg, #90ee90, #d6ffd6);
+    background: linear-gradient(135deg, #33d633, #d6ffd6);
     color: #2c2c2c;
     font-weight: 600;
     box-shadow: 0 6px 20px rgba(144, 238, 144, 0.4);
