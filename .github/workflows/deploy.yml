@@ -23,6 +23,12 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Workaround: preload upload-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dummy
+          path: README.md
+
       - name: Install dependencies
         run: npm ci
 
